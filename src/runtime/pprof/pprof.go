@@ -689,6 +689,13 @@ func StartCPUProfile(w io.Writer) error {
 	return nil
 }
 
+// IsCPUProfiling returns whether CPU profiling is turned on.
+func IsCPUProfiling() bool {
+	cpu.Lock()
+	defer cpu.Unlock()
+	return cpu.profiling
+}
+
 func profileWriter(w io.Writer) {
 	startTime := time.Now()
 	// This will buffer the entire profile into buf and then
