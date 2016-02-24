@@ -381,8 +381,8 @@ type g struct {
 	waiting        *sudog    // sudog structures this g is waiting on (that have a valid elem ptr); in lock order
 	cgoCtxt        []uintptr // cgo traceback context
 
-	// causal profiling delay
-	causalprofdelay uint64
+	causalprofdelay    uint64 // causal profiling delay
+	causalprofParkTime int64
 
 	// Per-G GC state
 
