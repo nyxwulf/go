@@ -50,11 +50,16 @@ func timeSleep(ns int64) {
 		return
 	}
 
+	when := nanotime() + ns
+	lock(&timers.lock)
+	if when <= nanotime() {
+		unlock(&timers.lock)
+		return
+	}
 	t := new(timer)
-	t.when = nanotime() + ns
+	t.when = when
 	t.f = goroutineReady
 	t.arg = getg()
-	lock(&timers.lock)
 	addtimerLocked(t)
 	goparkunlock(&timers.lock, "sleep", traceEvGoSleep, 2)
 }
